@@ -22,6 +22,21 @@ app.get('/', async (req, res) => {
     res.json(course);
 })
 
+app.get('/write', async (req, res) => {
+    const { save } = req.query;
+    if (save === 'true') {
+        fs.readFile(path.resolve(__dirname, 'data.xml'), { encoding: 'utf-8' }, (err, data) => {
+            if (!err) {
+                fs.writeFile(path.resolve(__dirname, 'data.txt'), data, (err) => {
+                    if (err) throw err;
+                    else console.log('Ghi file thanh cong');
+                })
+            }
+        })
+    }
+    res.send('Save data to data.txt');
+})
+
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useCreateIndex: true,
